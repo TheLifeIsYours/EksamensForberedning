@@ -1,21 +1,26 @@
 window.onload = () => {
     const message = document.querySelector('#messages');
     const mainContainer = document.querySelector('#main');
+    const cardCount = document.querySelector('#card-count');
 
     let cards = [1, 2, 3, 4, 5, 6, 7, 8];
     let cardBuffer = [];
     let clickedCards = [];
+    let counter;
 
     createGame();
 
     document.addEventListener('click', (_event) => {
-        if (_event.target.classList.contains('card')) {
+        if (_event.target.classList.contains('unflipped')) {
             let card = _event.target;
             cardClickEvent(card);
         }
     });
 
-    function createGame() {
+    function createGame(_clear) {
+        if(_clear) mainContainer.innerHTML = "";
+        setMessage("Click two cards");
+
         for (let i = 0; i < cards.length; i++) {
             for (let j = 0; j < 2; j++) {
                 let newCard = document.createElement('div');
@@ -23,13 +28,15 @@ window.onload = () => {
                 newCard.id = `card-${i}`;
                 newCard.classList.add('card', 'unflipped');
                 newCard.setAttribute('value', cards[i]);
-                newCard.innerHTML = `<div class="value">${cards[i]}</div>`;
+                newCard.innerHTML = `<div class="front"><div class="value">${cards[i]}</div></div>`;
 
                 cardBuffer.push(newCard);
             }
         }
 
         let len = cardBuffer.length;
+        counter = len;
+        cardCount.innerHTML = counter;
 
         for (let i = 0; i < len; i++) {
             let rndIndex = Math.floor(Math.random() * cardBuffer.length);
@@ -42,8 +49,10 @@ window.onload = () => {
 
     function cardClickEvent(_card) {
         clickedCards.push(_card);
-
         _card.classList.remove('unflipped');
+
+        let card1 = clickedCards[0];
+        let card2 = clickedCards[1];
 
         //If clicked too many cards, resetBoard;
         if (clickedCards.length > 2) {
@@ -54,11 +63,10 @@ window.onload = () => {
 
         //If clicked two cards, check values, and give points, or resetBoard;
         if (clickedCards.length == 2) {
-            if (clickedCards[0].getAttribute('value') == clickedCards[1].getAttribute('value')) {
+            if (card1.getAttribute('value') == card2.getAttribute('value')) {
                 setMessage(`correct match!`);
-                    givePoints();
-                    return;
-                } else {
+                givePoints();
+            } else {
                 setMessage(`wrong match!`);
             }
 
@@ -72,6 +80,22 @@ window.onload = () => {
         clickedCards.forEach((card) => {
             card.classList.add('hidden');
         });
+
+        counter -= 2;
+        cardCount.innerHTML = counter;
+
+        if(counter <= 0) {
+            gameWon();
+        }
+    }
+
+    async function gameWon() {
+
+        setMessage("Congratulations");
+        
+        await sleep(1000);
+
+        createGame(true)
     }
 
     function resetBoard() {
@@ -84,5 +108,9 @@ window.onload = () => {
 
     function setMessage(_text) {
         message.innerHTML = _text;
+    }
+
+    function sleep(_ms) {
+        return new Promise((resolve, reject) => {setTimeout(() => {return resolve()}, _ms)});
     }
 };

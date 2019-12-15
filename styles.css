@@ -26,6 +26,9 @@ body {
   color: white;
   font-size: 20px;
 }
+#card-count{
+  color: white;
+}
 
 .card {
   width: 5em;
