@@ -1,0 +1,56 @@
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: #272727;
+  color: black;
+  font-family: arial, sans-serif;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#main {
+  width: 22em;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+#messages {
+  color: white;
+  font-size: 20px;
+}
+
+.card {
+  width: 5em;
+  height: 7em;
+  background: white;
+  margin: 0.25em;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+}
+
+.value {
+  font-size: 1.4em;
+  pointer-events: none;
+  /* transform: rotateY(180deg);
+  backface-visibility: hidden; */
+}
+
+.unflipped {
+  background: red;
+}
+
+.hidden {
+    visibility: hidden;
+}
